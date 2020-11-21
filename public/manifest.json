@@ -1,21 +1,30 @@
 {
-  "name": "Awesome Extension",
+  "name": "sapporo",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "create-react-app for extensions",
+  "description": "ko to jp translator for notion",
   "icons": {
     "128": "logo128.png"
   },
-  "permissions": [],
+  "permissions": ["activeTab", "storage", "declarativeContent"],
   "background": {
     "scripts": [
       "background.js"
     ],
-    "persistent": true
+    "persistent": false
   },
   "browser_action": {
     "default_icon": "logo128.png",
     "default_popup": "popup.html"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "MacCtrl+Shift+F"
+      },
+      "description": "Open popup.html"
+    }
   },
   "options_page": "index.html"
 }
