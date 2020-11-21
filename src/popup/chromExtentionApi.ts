@@ -1,33 +1,39 @@
 /* eslint-disable no-var */
 const DEFAULT_ID = 9738232;
 
+interface TranslationChunk {
+  parentNode: HTMLElement;
+  source: string;
+  translated?: string;
+}
+
 const translate = () => {
 
-  var seatchTextNode = (root: HTMLElement, prevChunk: string[]) => {
-    const chunk = prevChunk;
+  var seatchTextNode = (root: HTMLElement, prevChunks: TranslationChunk[]) => {
+    const chunks = prevChunks;
     if (root.nodeName === '#text') {
       const nodeValue = root.nodeValue?.replace(/(\s*)/g, '');
       if (nodeValue && nodeValue.length > 0) {
-        console.log(root.parentNode, nodeValue)
-        chunk.push(nodeValue);
+        chunks.push({
+          parentNode: root.parentNode as HTMLElement,
+          source: nodeValue,
+        });
       }
     }
     root.childNodes.forEach((child) => {
-      seatchTextNode(child as HTMLElement, chunk);
+      seatchTextNode(child as HTMLElement, chunks);
     });
-    return chunk;
+    return chunks;
   }
 
   if (window.location.host === 'www.notion.so') {
     const notionApp = document.querySelector<HTMLDivElement>('#notion-app');
-    const allText = notionApp!.innerText.replace(/(\s*)/g, '');
-    console.log('allText', allText.length);   
-    (window as any).allText = allText;
 
     if (notionApp) {
-      const chunk = seatchTextNode(notionApp, []);
-      console.log(chunk.join('').replace(/(\s*)/g, '').length)
-      // (window as any).allText = allText;
+      const chunks = seatchTextNode(notionApp, []);
+      chunks.forEach(chunk => {
+        chunk.parentNode.textContent = 'abc';
+      })
     }
   }
 };
