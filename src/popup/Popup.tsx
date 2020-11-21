@@ -1,16 +1,20 @@
-import React from 'react';
+/** @jsx jsx */
+import { jsx } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Button } from 'notion-ui';
+import { translatePage } from './chromExtentionApi';
 
-function Popup() {
-  const handleClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      if (tabs && tabs.length > 0) {
-        chrome.tabs.executeScript(tabs[0].id || 232, {
-          code: 'document.body.style.backgroundColor = "red"',
-        });
-      }
-    });
-  };
-  return <div onClick={handleClick}>노션 페이지 번역 </div>;
-}
+const Popup = () => {
+  return (
+    <StyledPopup>
+      <Button onClick={translatePage}>translation</Button>
+    </StyledPopup>
+  );
+};
 
 export default Popup;
+
+const StyledPopup = styled.div`
+  width: 100px;
+  height: 60px;
+`;
