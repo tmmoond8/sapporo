@@ -8,7 +8,7 @@ interface TranslationChunk {
 }
 
 const translate = () => {
-
+  
   var seatchTextNode = (root: HTMLElement, prevChunks: TranslationChunk[]) => {
     const chunks = prevChunks;
     if (root.nodeName === '#text') {
@@ -31,8 +31,24 @@ const translate = () => {
 
     if (notionApp) {
       const chunks = seatchTextNode(notionApp, []);
-      chunks.forEach(chunk => {
-        chunk.parentNode.textContent = 'abc';
+      fetch('http://localhost:4000/api/translation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(chunks.map(chunk => chunk.source))
+      }).then(response => {
+        if (notionApp) {
+          response.json().then((data) => {
+            const { data: translated, ok } = data;
+            if (ok) {
+              chunks.forEach((chunk, index) => {
+                const { parentNode } = chunk;
+                parentNode.textContent = translated[index]
+              })
+            }
+          })
+        }
       })
     }
   }
