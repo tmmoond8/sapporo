@@ -31,7 +31,7 @@ const translate = () => {
 
     if (notionApp) {
       const chunks = seatchTextNode(notionApp, []);
-      fetch('http://localhost:4000/api/translation', {
+      fetch('https://sapporo-api.tammolo.com/api/translation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
